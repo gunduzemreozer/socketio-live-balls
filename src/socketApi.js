@@ -1,7 +1,7 @@
 const socketio = require('socket.io');
 const io = socketio({ wsEngine: 'ws' });
 
-const users = [];
+const users = { };
 const socketApi = { io };
 io.on('connection', socket => {
     socket.on('newUser', data => {
@@ -11,9 +11,15 @@ io.on('connection', socket => {
         };
 
         const user = Object.assign(data, defaultUserData);
-        console.log(user);
+        users[socket.id] = user;
 
-        users.push(user);
+        socket.broadcast.emit('newUser', user);
+        socket.emit('initPlayers', users);
+    });
+
+    socket.on('disconnect', () => {
+        socket.broadcast.emit('disconnectUser', users[socket.id]);
+        delete users[socket.id];
     });
 });
 
