@@ -1,4 +1,4 @@
-app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFactory) => {
+app.controller('indexController', ['$scope', 'configFactory', 'indexFactory', ($scope, configFactory, indexFactory) => {
     const divGameArea = $('div.gameArea');
 
     $scope.messages = [];
@@ -38,7 +38,9 @@ app.controller('indexController', ['$scope', 'indexFactory', ($scope, indexFacto
     
         let socket;
         try {
-             socket = await indexFactory.connectSocket('http://localhost:3000', reconnectOptions);
+            const config = await configFactory.getConfig();
+            const { socketUrl } = config.data;
+            socket = await indexFactory.connectSocket(socketUrl, reconnectOptions);
         }
         catch (err) {
             console.log(err);
