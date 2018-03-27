@@ -4,16 +4,17 @@ block content
     div(ng-controller="indexController", ng-init="init()")
       .ui.one.column.stackable.center.aligned.page.grid.margin-30
         .column.twelve.wide
-          .ui.stacked.segment.gameArea
+          .ui.stacked.segment.gameArea(ng-click="onClickGameArea($event)")
             
-            .circle.blue(
+            .circle(
               ng-repeat="player in players"
-              ng-style="{ 'left': player.position.x, 'top': player.position.y }"
+              ng-style="{ 'left': player.position.x + 'px', 'top': player.position.y + 'px', 'background-color': player.color }"
+              id="{{ player.id }}"
             )
               .relative
                 span.name {{ player.username }}
-                // .message 
-          .ui.items.chat
+                .message
+          .ui.items.chat#chat-area
             .item(ng-repeat="message in messages")
               .content(ng-if="message.type.code === 0")
                 span [SERVER] &nbsp;
@@ -22,6 +23,11 @@ block content
                   | katıldı
                 .description.message(ng-if="message.type.message === 0")
                   | ayrıldı
-          .ui.action.input.fluid
-            input(type='text', placeholder='Type here...')
-            button.ui.button Send
+
+              .content(ng-if="message.type.code === 1")
+                a.header.name {{ message.username }} &nbsp;
+                .description.message
+                  | {{ message.type.message }}
+          form.ui.action.input.fluid(ng-submit="newMessage()")
+            input(type='text', placeholder='Type here...', ng-model='message')
+            button.ui.button(type="submit") Send

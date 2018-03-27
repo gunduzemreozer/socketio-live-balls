@@ -6,6 +6,7 @@
   "homepage": "https://github.com/gunduzemreozer/socketio-live-balls",
   "dependencies": {
     "angular": "^1.6.9",
-    "semantic": "^2.3.1"
+    "semantic": "^2.3.1",
+    "jquery": "^3.3.1"
   }
 }

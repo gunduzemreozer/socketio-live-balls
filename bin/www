@@ -33,7 +33,7 @@ server.on('listening', onListening);
  * socketio
  */
 const { io } = require('../src/socketApi');
-io.attach(server)
+io.attach(server, { wsEngine: 'ws' });
 
 /**
  * Normalize a port into a number, string, or false.
